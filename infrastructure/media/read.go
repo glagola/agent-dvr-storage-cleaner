@@ -15,7 +15,7 @@ var _ ReadRepository = (*repository)(nil)
 
 func (self repository) Videos(source objects.MediaSource) ([]Video, error) {
 	videoFilePattern := self.pathToMediaFolder.videoPattern(source.Directory)
-	fmt.Println(videoFilePattern)
+
 	matchedFiles, err := filepath.Glob(videoFilePattern)
 
 	if err != nil {

@@ -7,12 +7,6 @@ import (
 	"os"
 )
 
-type repository struct {
-	pathToFile string
-}
-
-var _ ReadRepository = (*repository)(nil)
-
 type xmlObject struct {
 	ID        int    `xml:"id,attr"`
 	Name      string `xml:"name,attr"`
@@ -22,6 +16,18 @@ type xmlObject struct {
 type xmlObjectsConfig struct {
 	Cameras     []xmlObject `xml:"cameras>camera"`
 	Microphones []xmlObject `xml:"microphones>microphone"`
+}
+
+type repository struct {
+	pathToFile string
+}
+
+var _ ReadRepository = (*repository)(nil)
+
+func NewReadRepository(pathToXmlFile string) ReadRepository {
+	return &repository{
+		pathToFile: pathToXmlFile,
+	}
 }
 
 func (self *repository) decode() (*xmlObjectsConfig, error) {
@@ -93,10 +99,4 @@ func (self *repository) Microphones() ([]MediaSource, error) {
 	}
 
 	return res, nil
-}
-
-func NewReadRepository(pathToXmlFile string) ReadRepository {
-	return &repository{
-		pathToFile: pathToXmlFile,
-	}
 }
